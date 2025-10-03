@@ -1,7 +1,7 @@
 import Button from "./Button";
 
 interface ChatFormProps {
-  next: (() => void) | ((e: React.FormEvent<HTMLFormElement>) => void);
+  next: () => void | Promise<void>;
   isLoading?: boolean;
 }
 
