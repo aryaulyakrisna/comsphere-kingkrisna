@@ -34,7 +34,7 @@ const VerifyOtpForm = ({user_id, question}: VerifyOtpFormProps) => {
     try {
       const res = await apiClient.post("/auth/verify-answer", data);
 
-      saveAccessToken(res.data.data.accessToken);
+      saveAccessToken(res.data.data);
       setAuth(true);
       navigate("/chat");
       

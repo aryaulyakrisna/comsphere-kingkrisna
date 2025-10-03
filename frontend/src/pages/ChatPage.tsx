@@ -7,22 +7,44 @@ import type { ChatProps } from "../components/Chat";
 import { getAccessToken } from "../utils/accessToken";
 import { useEffect, useState } from "react";
 
-const LandingPage = () => {
-  const [deps, setDeps] = useState(false);
+// Interface for API response format
+interface ApiChatResponse {
+  chat_from: "user" | "bot";
+  datetime: string;
+  chat: string;
+  id: number;
+}
 
+const LandingPage = () => {
   const requestConfig = {
     headers: {
       Authorization: `Bearer ${getAccessToken()}`,
     },
   };
 
-  const { data, error } = useData<ChatProps[]>(
+  const { data, error } = useData<ApiChatResponse[]>(
     "/chat",
-    requestConfig,
-    [deps]
+    requestConfig
   );
 
-  const [chats, setChats] = useState<ChatProps[]>(data || []);
+  const [chats, setChats] = useState<ChatProps[]>([]);
+
+  // Convert API format to ChatProps format
+  const convertApiToChatProps = (apiChats: ApiChatResponse[]): ChatProps[] => {
+    return apiChats.map(apiChat => ({
+      from: apiChat.chat_from,
+      datetime: apiChat.datetime,
+      message: apiChat.chat,
+      id: apiChat.id
+    }));
+  };
+
+  useEffect(() => {
+    if (data) {
+      setChats(convertApiToChatProps(data));
+    }
+  }, [data]);
+
 
     useEffect(() => {
       if (error) {
@@ -39,7 +61,6 @@ const LandingPage = () => {
           <div className="flex flex-col gap-4 w-full">
             <ChatColumn chats={chats || []} />
             <ChatForm
-              setDeps={() => setDeps(!deps)}
               setChats={setChats}
               chats={chats}
             />

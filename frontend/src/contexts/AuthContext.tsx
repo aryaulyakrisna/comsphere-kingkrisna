@@ -27,6 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
 
     const getAuth = async () => {
+      console.log(getAccessToken());
       if (getAccessToken()) {
         const requestConfig = {
           headers: {

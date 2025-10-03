@@ -3,7 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ChatPage from "./pages/ChatPage";
-import VerifyOtpPage from "./pages/VerifyOtpPage";
+import VerifyOtpPage from "./pages/verifyOtpPage";
 import NoPage from "./pages/NoPage";
 import useAuth from "./hooks/useAuth";
 import LoadingPage from "./pages/LoadingPage";

@@ -46,9 +46,9 @@ export const verifyAnswerController = async (req, res) => {
 
 export const meController = async (req, res) => {
   try {
-    const {user_id, username } = req.user;
+    const {user_id} = req.user;
 
-    const isAuth = await me(user_id, username);
+    const isAuth = await me(user_id);
 
     res.status(200).json({
       message: "Authed successfully",

@@ -1,24 +1,26 @@
+import { query } from "express-validator";
 import pool from "../config/config.js";
+import getFormattedDateTime from "../utils/getFormattedDate.js";
 
 export const getChat = async (user_id) => {
   const [existingChat] = await pool.query(
-    "SELECT * FROM t_chat WHERE user_id = ?",
+    "SELECT * FROM t_chat WHERE user_id = ? ORDER BY datetime DESC LIMIT 20",
     [user_id]
   );
 
-  if (existingChat.length > 0) {
-    const now = new Date();
+  // if (existingChat.length > 0) {
+  //   const now = new Date();
 
-    const lastChatTime = new Date(
-      existingChat[existingChat.length - 1].datetime
-    );
-    const diffHours = (now - lastChatTime) / (1000 * 60 * 60);
+  //   const lastChatTime = new Date(
+  //     existingChat[existingChat.length - 1].datetime
+  //   );
+  //   const diffHours = (now - lastChatTime) / (1000 * 60 * 60);
 
-    if (diffHours > 24) {
-      await pool.query("DELETE FROM t_chat WHERE user_id = ?", [user_id]);
-      return [];
-    }
-  }
+  //   if (diffHours > 24) {
+  //     await pool.query("DELETE FROM t_chat WHERE user_id = ?", [user_id]);
+  //     return [];
+  //   }
+  // }
 
   return existingChat;
 };
@@ -26,9 +28,23 @@ export const getChat = async (user_id) => {
 export const postChat = async (user_id, chat, chat_from) => {
   const chatHistory = await getChat(user_id);
 
+  const chatQuery = [];
+
+  // Reverse the array to get oldest to newest order
+  chatHistory.reverse().forEach(element => {
+    chatQuery.push({
+      role: element.chat_from === "bot" ? "assistant" : "user",
+      content: element.chat,
+    });
+  });
+
+  chatQuery.push({
+    role: "user",
+    content: chat,
+  });
+
   const payload = {
-    now_chat: chat,
-    chat_history: chatHistory,
+    query: chatQuery
   };
 
   // Bentuk chat kalo cuman message (string) kalo json mungkin
@@ -66,7 +82,9 @@ export const postChat = async (user_id, chat, chat_from) => {
   };
 
   const botMessage = {
-    ...botData,
+    user_id,
+    chat: botData.response,
+    chat_from: "bot",
     datetime: getFormattedDateTime(),
   };
 

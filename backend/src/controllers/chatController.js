@@ -2,7 +2,7 @@ import { getChat, postChat } from "../repositories/chatRepository.js";
 
 export const getChatController = async (req, res) => {
   try {
-    const { user_id } = req.query;
+    const { user_id } = req.user;
     const result = await getChat(user_id);
 
     res.status(200).json({
@@ -18,6 +18,7 @@ export const getChatController = async (req, res) => {
 export const postChatController = async (req, res) => {
   try {
     const { user_id } = req.user;
+
     const { chat, chat_from } = req.body;
     const result = await postChat(user_id, chat, chat_from);
 

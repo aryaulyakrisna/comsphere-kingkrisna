@@ -135,7 +135,7 @@ export const verifyQuestion = async (user_id, answer) => {
   }
 };
 
-export const me = async (user_id, username) => {
+export const me = async (user_id) => {
   /*
     return:
       - generateToken (string => token jwt)
@@ -145,8 +145,8 @@ export const me = async (user_id, username) => {
 
   // Ambil user
   const [existingUser] = await pool.query(
-    "SELECT user_id FROM t_user WHERE user_id = ? AND username = ?",
-    [user_id, username]
+    "SELECT user_id FROM t_user WHERE user_id = ?",
+    [user_id]
   );
 
   if (existingUser.length === 0) throw new Error("User not found");

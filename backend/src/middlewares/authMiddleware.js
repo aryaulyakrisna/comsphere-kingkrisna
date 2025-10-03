@@ -19,6 +19,7 @@ async function authMiddleware(req, res, next) {
   if (!decoded)
     return res.status(403).json({ message: "Invalid or expired token" }); // respon status token habis/salah
 
+  // console.log(decoded);
   req.user = decoded;
   next();
 }
