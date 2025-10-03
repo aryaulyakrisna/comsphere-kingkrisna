@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2025 at 04:25 PM
+-- Generation Time: Oct 03, 2025 at 05:55 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -104,7 +104,8 @@ INSERT INTO `t_between_cities` (`bc_station_id`, `bc_station_name`, `bc_station_
 CREATE TABLE `t_chat` (
   `chat_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `chat` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`chat`))
+  `chat` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`chat`)),
+  `datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -237,20 +238,22 @@ CREATE TABLE `t_cl_line` (
   `cl_line_name` varchar(60) NOT NULL,
   `cl_line_code` varchar(60) NOT NULL,
   `city` varchar(60) NOT NULL,
-  `island` varchar(60) NOT NULL
+  `island` varchar(60) NOT NULL,
+  `crossed_stations` longtext NOT NULL,
+  `transit_stations` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `t_cl_line`
 --
 
-INSERT INTO `t_cl_line` (`cl_line_id`, `cl_line_name`, `cl_line_code`, `city`, `island`) VALUES
-(1, 'Lin Bogor', 'RED', 'Bogor', 'Jawa'),
-(2, 'Lin Cikarang/Bekasi', 'BLU', 'Bekasi', 'Jawa'),
-(3, 'Lin Rangkasbitung', 'GRN', 'Lebak', 'Jawa'),
-(4, 'Lin Tangerang', 'BRN', 'Tangerang', 'Jawa'),
-(5, 'Lin Tanjung Priok', 'PNK', 'Jakarta Utara', 'Jawa'),
-(6, 'Lin Yogyakarta-Solo', 'YSO', 'Yogyakarta', 'Jawa');
+INSERT INTO `t_cl_line` (`cl_line_id`, `cl_line_name`, `cl_line_code`, `city`, `island`, `crossed_stations`, `transit_stations`) VALUES
+(1, 'Lin Bogor', 'RED', 'Bogor', 'Jawa', 'Jakarta Kota, Jayakarta, Mangga Besar, Sawah Besar, Juanda, Gondangdia, Cikini, Manggarai, Tebet, Cawang, Duren Kalibata, Pasar Minggu Baru, Pasar Minggu, Tanjung Barat, Lenteng Agung, Univ. Pancasila, Pondok Cina, Depok Baru, Depok, Citayam, Bojong Ge Depok, Tanah Baru, Universitas Indonesia, Cilebut, Bogor', 'Jakarta Kota, Manggarai, Depok, Bogor'),
+(2, 'Lin Cikarang/Bekasi', 'BLU', 'Bekasi', 'Jawa', 'Jakarta Kota, Kampung Bandan, Rajawali, Kemayoran, Pasar Senen, Senen, Jatinegara, Matraman, Cipinang, Klender Baru, Buaran, Betawi, Cakung, Kranji, Bekasi Timur, Bekasi, Tambun, Cibitung, Cikarang', 'Jakarta Kota, Jatinegara, Bekasi, Cikarang'),
+(3, 'Lin Rangkasbitung', 'GRN', 'Lebak', 'Jawa', 'Tanah Abang, Palmerah, Kebayoran, Pondok Ranji, Jurang Mangu, Sudimara, Rawabuntu, Serpong, Parung, Parung Panjang, Cilejit, Tigaraksa, Mauk, Balaraja, Cikande, Serang, Rangkasbitung', 'Tanah Abang, Serpong, Rangkasbitung'),
+(4, 'Lin Tangerang', 'BRN', 'Tangerang', 'Jawa', 'Duri, Grogol, Pesing, Taman Kota, Bojong Indah, Rawa Buaya, Kalideres, Poris, Batu Ceper, Tanah Tinggi, Tangerang', 'Duri, Tangerang'),
+(5, 'Lin Tanjung Priok', 'PNK', 'Jakarta Utara', 'Jawa', 'Jakarta Kota, Kampung Bandan, Ancol, Tanjung Priok', 'Jakarta Kota, Tanjung Priok'),
+(6, 'Lin Yogyakarta-Solo', 'YSO', 'Yogyakarta', 'Jawa', 'Yogyakarta, Maguwoharjo, Brambanan, Srowot, Klaten, Ceper, Delanggu, Gawok, Purwosari, Solo Balapan, Solo Jebres', 'Yogyakarta, Solo Balapan');
 
 -- --------------------------------------------------------
 
@@ -376,17 +379,31 @@ CREATE TABLE `t_lrt_line` (
   `lrt_line_name` varchar(60) NOT NULL,
   `lrt_line_code` varchar(60) NOT NULL,
   `city` varchar(60) NOT NULL,
-  `island` varchar(60) NOT NULL
+  `island` varchar(60) NOT NULL,
+  `crossed_stations` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `t_lrt_line`
 --
 
-INSERT INTO `t_lrt_line` (`lrt_line_id`, `lrt_line_name`, `lrt_line_code`, `city`, `island`) VALUES
-(1, 'LRT Palembang', 'LRT-PLB', 'Palembang', 'Sumatera'),
-(2, 'LRT Jabodebek Cibubur Line', 'LRT-JBD-CB', 'Jakarta', 'Jawa'),
-(3, 'LRT Jabodebek Bekasi Line', 'LRT-JBD-BK', 'Jakarta', 'Jawa');
+INSERT INTO `t_lrt_line` (`lrt_line_id`, `lrt_line_name`, `lrt_line_code`, `city`, `island`, `crossed_stations`) VALUES
+(1, 'LRT Palembang', 'LRT-PLB', 'Palembang', 'Sumatera', 'Bandara SMB II, Asrama Haji, Punting Kayu, RSUD, Garuda Dempo, Demang, Bumi Sriwijaya, Dishub Kominfo Prov., Pasar Cinde, Terpadu Jembatan Ampera, Gubernur Bestari - Polresta, Jakabaring, DJKA'),
+(2, 'LRT Jabodebek Cibubur Line', 'LRT-JBD-CB', 'Jakarta', 'Jawa', 'Dukuh Atas, Setiabudi, Rasuna Said, Kuningan, Pancoran, Cikoko, Cililitan, Cawang, TMII, Kampung Rambutan, Ciracas, Harjamukti'),
+(3, 'LRT Jabodebek Bekasi Line', 'LRT-JBD-BK', 'Jakarta', 'Jawa', 'Dukuh Atas, Setiabudi, Rasuna Said, Kuningan, Pancoran, Cikoko, Cililitan, Cawang, TMII, Kampung Rambutan, Ciracas, Harjamukti, Cikunir 1, Cikunir 2, Bekasi Barat, Jati Mulya');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t_otp`
+--
+
+CREATE TABLE `t_otp` (
+  `otp_id` int(11) NOT NULL,
+  `question` longtext NOT NULL,
+  `answer` longtext NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -422,27 +439,175 @@ INSERT INTO `t_plane` (`pl_station_id`, `pl_station_name`, `pl_station_code`, `c
 
 CREATE TABLE `t_seat` (
   `seat_id` int(11) NOT NULL,
+  `train_name` varchar(60) NOT NULL,
   `train_code` varchar(60) NOT NULL,
   `seat_code` varchar(60) NOT NULL,
   `status` enum('booked','unbooked') NOT NULL,
-  `amount` int(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `t_ticket`
---
-
-CREATE TABLE `t_ticket` (
-  `ticket_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `train_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
+  `amount` int(100) NOT NULL,
+  `start_stat_name` varchar(60) NOT NULL,
+  `finish_stat_name` varchar(60) NOT NULL,
+  `starting_city` varchar(60) NOT NULL,
+  `destination_city` varchar(60) NOT NULL,
+  `train_type` enum('nonlocal','local','plane') NOT NULL,
   `schedule` datetime NOT NULL,
-  `status` enum('paid','pending') NOT NULL,
-  `seat_code` varchar(60) NOT NULL
+  `seat_type` enum('ekonomi','bisnis') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `t_seat`
+--
+
+INSERT INTO `t_seat` (`seat_id`, `train_name`, `train_code`, `seat_code`, `status`, `amount`, `start_stat_name`, `finish_stat_name`, `starting_city`, `destination_city`, `train_type`, `schedule`, `seat_type`) VALUES
+(696, 'Airport Express 001', 'MGR-CGK-001', 'A1', 'unbooked', 183810, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(697, 'Airport Express 001', 'MGR-CGK-001', 'A2', 'unbooked', 114592, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(698, 'Airport Express 001', 'MGR-CGK-001', 'A3', 'unbooked', 103278, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(699, 'Airport Express 001', 'MGR-CGK-001', 'A4', 'unbooked', 197196, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(700, 'Airport Express 001', 'MGR-CGK-001', 'A5', 'unbooked', 136048, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(701, 'Airport Express 001', 'MGR-CGK-001', 'A6', 'unbooked', 132098, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(702, 'Airport Express 001', 'MGR-CGK-001', 'A7', 'unbooked', 129256, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(703, 'Airport Express 001', 'MGR-CGK-001', 'A8', 'unbooked', 118289, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(704, 'Airport Express 001', 'MGR-CGK-001', 'A9', 'unbooked', 196530, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(705, 'Airport Express 001', 'MGR-CGK-001', 'A10', 'unbooked', 113434, 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 'ekonomi'),
+(706, 'Airport Express 002', 'SDB-CGK-002', 'A1', 'unbooked', 188696, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(707, 'Airport Express 002', 'SDB-CGK-002', 'A2', 'unbooked', 197080, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(708, 'Airport Express 002', 'SDB-CGK-002', 'A3', 'unbooked', 171482, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(709, 'Airport Express 002', 'SDB-CGK-002', 'A4', 'unbooked', 111395, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(710, 'Airport Express 002', 'SDB-CGK-002', 'A5', 'unbooked', 177397, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(711, 'Airport Express 002', 'SDB-CGK-002', 'A6', 'unbooked', 155302, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(712, 'Airport Express 002', 'SDB-CGK-002', 'A7', 'unbooked', 104165, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(713, 'Airport Express 002', 'SDB-CGK-002', 'A8', 'unbooked', 103905, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(714, 'Airport Express 002', 'SDB-CGK-002', 'A9', 'unbooked', 112280, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(715, 'Airport Express 002', 'SDB-CGK-002', 'A10', 'unbooked', 128657, 'Sudirman Baru', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:30:00', 'ekonomi'),
+(716, 'Airport Express 003', 'DRI-CGK-003', 'A1', 'unbooked', 130495, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(717, 'Airport Express 003', 'DRI-CGK-003', 'A2', 'unbooked', 166237, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(718, 'Airport Express 003', 'DRI-CGK-003', 'A3', 'unbooked', 178907, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(719, 'Airport Express 003', 'DRI-CGK-003', 'A4', 'unbooked', 103478, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(720, 'Airport Express 003', 'DRI-CGK-003', 'A5', 'unbooked', 173563, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(721, 'Airport Express 003', 'DRI-CGK-003', 'A6', 'unbooked', 126062, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(722, 'Airport Express 003', 'DRI-CGK-003', 'A7', 'unbooked', 193850, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(723, 'Airport Express 003', 'DRI-CGK-003', 'A8', 'unbooked', 185181, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(724, 'Airport Express 003', 'DRI-CGK-003', 'A9', 'unbooked', 191924, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(725, 'Airport Express 003', 'DRI-CGK-003', 'A10', 'unbooked', 171426, 'Duri', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:00:00', 'ekonomi'),
+(726, 'Airport Express 004', 'RWB-CGK-004', 'A1', 'unbooked', 154987, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(727, 'Airport Express 004', 'RWB-CGK-004', 'A2', 'unbooked', 128893, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(728, 'Airport Express 004', 'RWB-CGK-004', 'A3', 'unbooked', 158878, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(729, 'Airport Express 004', 'RWB-CGK-004', 'A4', 'unbooked', 177236, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(730, 'Airport Express 004', 'RWB-CGK-004', 'A5', 'unbooked', 136463, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(731, 'Airport Express 004', 'RWB-CGK-004', 'A6', 'unbooked', 100851, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(732, 'Airport Express 004', 'RWB-CGK-004', 'A7', 'unbooked', 199458, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(733, 'Airport Express 004', 'RWB-CGK-004', 'A8', 'unbooked', 120926, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(734, 'Airport Express 004', 'RWB-CGK-004', 'A9', 'unbooked', 191506, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(735, 'Airport Express 004', 'RWB-CGK-004', 'A10', 'unbooked', 155392, 'Rawabuaya', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 07:30:00', 'ekonomi'),
+(736, 'Airport Express 005', 'BTP-CGK-005', 'A1', 'unbooked', 144597, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(737, 'Airport Express 005', 'BTP-CGK-005', 'A2', 'unbooked', 136421, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(738, 'Airport Express 005', 'BTP-CGK-005', 'A3', 'unbooked', 120379, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(739, 'Airport Express 005', 'BTP-CGK-005', 'A4', 'unbooked', 128221, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(740, 'Airport Express 005', 'BTP-CGK-005', 'A5', 'unbooked', 144118, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(741, 'Airport Express 005', 'BTP-CGK-005', 'A6', 'unbooked', 113396, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(742, 'Airport Express 005', 'BTP-CGK-005', 'A7', 'unbooked', 112156, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(743, 'Airport Express 005', 'BTP-CGK-005', 'A8', 'unbooked', 149797, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(744, 'Airport Express 005', 'BTP-CGK-005', 'A9', 'unbooked', 112676, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(745, 'Airport Express 005', 'BTP-CGK-005', 'A10', 'unbooked', 147052, 'Batu Ceper', 'Soekarno-Hatta', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 08:00:00', 'ekonomi'),
+(746, 'Airport Express 006', 'CGK-MGR-006', 'A1', 'unbooked', 145082, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(747, 'Airport Express 006', 'CGK-MGR-006', 'A2', 'unbooked', 179131, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(748, 'Airport Express 006', 'CGK-MGR-006', 'A3', 'unbooked', 134671, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(749, 'Airport Express 006', 'CGK-MGR-006', 'A4', 'unbooked', 105695, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(750, 'Airport Express 006', 'CGK-MGR-006', 'A5', 'unbooked', 195647, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(751, 'Airport Express 006', 'CGK-MGR-006', 'A6', 'unbooked', 160217, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(752, 'Airport Express 006', 'CGK-MGR-006', 'A7', 'unbooked', 170284, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(753, 'Airport Express 006', 'CGK-MGR-006', 'A8', 'unbooked', 116361, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(754, 'Airport Express 006', 'CGK-MGR-006', 'A9', 'unbooked', 149615, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(755, 'Airport Express 006', 'CGK-MGR-006', 'A10', 'unbooked', 110328, 'Soekarno-Hatta', 'Manggarai', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 08:30:00', 'ekonomi'),
+(756, 'Airport Express 007', 'CGK-SDB-007', 'A1', 'unbooked', 172357, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(757, 'Airport Express 007', 'CGK-SDB-007', 'A2', 'unbooked', 138427, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(758, 'Airport Express 007', 'CGK-SDB-007', 'A3', 'unbooked', 182397, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(759, 'Airport Express 007', 'CGK-SDB-007', 'A4', 'unbooked', 181070, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(760, 'Airport Express 007', 'CGK-SDB-007', 'A5', 'unbooked', 147400, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(761, 'Airport Express 007', 'CGK-SDB-007', 'A6', 'unbooked', 175674, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(762, 'Airport Express 007', 'CGK-SDB-007', 'A7', 'unbooked', 125203, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(763, 'Airport Express 007', 'CGK-SDB-007', 'A8', 'unbooked', 192349, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(764, 'Airport Express 007', 'CGK-SDB-007', 'A9', 'unbooked', 109116, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(765, 'Airport Express 007', 'CGK-SDB-007', 'A10', 'unbooked', 106006, 'Soekarno-Hatta', 'Sudirman Baru', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:00:00', 'ekonomi'),
+(766, 'Airport Express 008', 'CGK-DRI-008', 'A1', 'unbooked', 186673, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(767, 'Airport Express 008', 'CGK-DRI-008', 'A2', 'unbooked', 129871, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(768, 'Airport Express 008', 'CGK-DRI-008', 'A3', 'unbooked', 137930, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(769, 'Airport Express 008', 'CGK-DRI-008', 'A4', 'unbooked', 110458, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(770, 'Airport Express 008', 'CGK-DRI-008', 'A5', 'unbooked', 130512, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(771, 'Airport Express 008', 'CGK-DRI-008', 'A6', 'unbooked', 113238, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(772, 'Airport Express 008', 'CGK-DRI-008', 'A7', 'unbooked', 149823, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(773, 'Airport Express 008', 'CGK-DRI-008', 'A8', 'unbooked', 136434, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(774, 'Airport Express 008', 'CGK-DRI-008', 'A9', 'unbooked', 159429, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(775, 'Airport Express 008', 'CGK-DRI-008', 'A10', 'unbooked', 183320, 'Soekarno-Hatta', 'Duri', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 09:30:00', 'ekonomi'),
+(776, 'Airport Express 009', 'CGK-RWB-009', 'A1', 'unbooked', 147819, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(777, 'Airport Express 009', 'CGK-RWB-009', 'A2', 'unbooked', 121319, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(778, 'Airport Express 009', 'CGK-RWB-009', 'A3', 'unbooked', 148520, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(779, 'Airport Express 009', 'CGK-RWB-009', 'A4', 'unbooked', 146566, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(780, 'Airport Express 009', 'CGK-RWB-009', 'A5', 'unbooked', 127460, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(781, 'Airport Express 009', 'CGK-RWB-009', 'A6', 'unbooked', 187841, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(782, 'Airport Express 009', 'CGK-RWB-009', 'A7', 'unbooked', 134993, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(783, 'Airport Express 009', 'CGK-RWB-009', 'A8', 'unbooked', 191988, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(784, 'Airport Express 009', 'CGK-RWB-009', 'A9', 'unbooked', 189593, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(785, 'Airport Express 009', 'CGK-RWB-009', 'A10', 'unbooked', 184939, 'Soekarno-Hatta', 'Rawabuaya', 'Tangerang', 'Jakarta', 'plane', '2025-10-04 10:00:00', 'ekonomi'),
+(786, 'Airport Express 010', 'CGK-BTP-010', 'A1', 'unbooked', 109358, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(787, 'Airport Express 010', 'CGK-BTP-010', 'A2', 'unbooked', 179840, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(788, 'Airport Express 010', 'CGK-BTP-010', 'A3', 'unbooked', 183227, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(789, 'Airport Express 010', 'CGK-BTP-010', 'A4', 'unbooked', 122431, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(790, 'Airport Express 010', 'CGK-BTP-010', 'A5', 'unbooked', 170010, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(791, 'Airport Express 010', 'CGK-BTP-010', 'A6', 'unbooked', 195568, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(792, 'Airport Express 010', 'CGK-BTP-010', 'A7', 'unbooked', 132087, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(793, 'Airport Express 010', 'CGK-BTP-010', 'A8', 'unbooked', 121417, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(794, 'Airport Express 010', 'CGK-BTP-010', 'A9', 'unbooked', 160589, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(795, 'Airport Express 010', 'CGK-BTP-010', 'A10', 'unbooked', 149735, 'Soekarno-Hatta', 'Batu Ceper', 'Tangerang', 'Tangerang', 'plane', '2025-10-04 10:30:00', 'ekonomi'),
+(846, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A1', 'unbooked', 125000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(847, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A2', 'unbooked', 178000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(848, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A3', 'unbooked', 142000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(849, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A4', 'unbooked', 109000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(850, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A5', 'unbooked', 167000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(851, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A6', 'unbooked', 134000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(852, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A7', 'unbooked', 156000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(853, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A8', 'unbooked', 118000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(854, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A9', 'unbooked', 189000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(855, 'Local Trans 001', 'LOC-ATA-ARB-001', 'A10', 'unbooked', 147000, 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'local', '2025-10-04 07:00:00', 'ekonomi'),
+(856, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A1', 'unbooked', 132000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(857, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A2', 'unbooked', 165000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(858, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A3', 'unbooked', 119000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(859, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A4', 'unbooked', 178000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(860, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A5', 'unbooked', 143000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(861, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A6', 'unbooked', 156000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(862, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A7', 'unbooked', 121000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(863, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A8', 'unbooked', 169000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(864, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A9', 'unbooked', 138000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(865, 'Local Trans 002', 'LOC-AGO-AJ-002', 'A10', 'unbooked', 182000, 'Aropuro', 'Arjasa', 'Kabupaten Banyuwangi', 'Kabupaten Jember', 'local', '2025-10-04 09:00:00', 'ekonomi'),
+(866, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A1', 'unbooked', 115000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(867, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A2', 'unbooked', 164000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(868, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A3', 'unbooked', 139000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(869, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A4', 'unbooked', 172000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(870, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A5', 'unbooked', 126000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(871, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A6', 'unbooked', 158000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(872, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A7', 'unbooked', 145000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(873, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A8', 'unbooked', 133000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(874, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A9', 'unbooked', 197000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(875, 'Local Trans 003', 'LOC-BBT-BWO-003', 'A10', 'unbooked', 108000, 'Bajat', 'Bojonegoro', 'Kabupaten Lamongan', 'Kabupaten Bojonegoro', 'local', '2025-10-04 11:00:00', 'ekonomi'),
+(876, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A1', 'unbooked', 141000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(877, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A2', 'unbooked', 152000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(878, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A3', 'unbooked', 127000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(879, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A4', 'unbooked', 168000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(880, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A5', 'unbooked', 134000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(881, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A6', 'unbooked', 179000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(882, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A7', 'unbooked', 116000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(883, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A8', 'unbooked', 163000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(884, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A9', 'unbooked', 149000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(885, 'Local Trans 004', 'LOC-BNG-BDR-004', 'A10', 'unbooked', 122000, 'Bangil', 'Buduran', 'Kota Pasuruan', 'Sidoarjo', 'local', '2025-10-04 13:00:00', 'ekonomi'),
+(886, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A1', 'unbooked', 137000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(887, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A2', 'unbooked', 184000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(888, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A3', 'unbooked', 105000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(889, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A4', 'unbooked', 171000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(890, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A5', 'unbooked', 128000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(891, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A6', 'unbooked', 159000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(892, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A7', 'unbooked', 146000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(893, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A8', 'unbooked', 113000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(894, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A9', 'unbooked', 196000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi'),
+(895, 'Local Trans 005', 'LOC-BBN-BTG-005', 'A10', 'unbooked', 124000, 'Brambanan', 'Batang', 'Kota Yogyakarta', 'Kota Pekalongan', 'local', '2025-10-04 15:00:00', 'ekonomi');
 
 -- --------------------------------------------------------
 
@@ -452,16 +617,64 @@ CREATE TABLE `t_ticket` (
 
 CREATE TABLE `t_train` (
   `train_id` int(11) NOT NULL,
-  `train_type` enum('lrt','cl','local','nonlocal','plane') NOT NULL,
+  `train_type` enum('local','nonlocal','plane') NOT NULL,
   `start_stat_name` varchar(60) NOT NULL,
   `finish_stat_name` varchar(60) NOT NULL,
   `schedule` datetime NOT NULL,
   `cl_line_code` varchar(60) DEFAULT NULL,
   `lrt_line_code` varchar(60) DEFAULT NULL,
   `train_code` varchar(60) NOT NULL,
-  `train_seat_amount` int(11) NOT NULL,
-  `train_seat_booked` int(11) NOT NULL
+  `train_seat_amount` int(11) DEFAULT NULL,
+  `train_seat_booked` int(11) DEFAULT NULL,
+  `starting_city` varchar(60) NOT NULL,
+  `destination_city` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `t_train`
+--
+
+INSERT INTO `t_train` (`train_id`, `train_type`, `start_stat_name`, `finish_stat_name`, `schedule`, `cl_line_code`, `lrt_line_code`, `train_code`, `train_seat_amount`, `train_seat_booked`, `starting_city`, `destination_city`) VALUES
+(110, 'plane', 'Manggarai', 'Soekarno-Hatta', '2025-10-02 00:12:00', NULL, NULL, 'MGR-CGK-001', 120, 95, '', ''),
+(111, 'plane', 'Sudirman Baru', 'Soekarno-Hatta', '2025-10-02 03:45:00', NULL, NULL, 'SDB-CGK-002', 140, 100, '', ''),
+(112, 'plane', 'Duri', 'Soekarno-Hatta', '2025-10-02 06:20:00', NULL, NULL, 'DRI-CGK-003', 150, 120, '', ''),
+(113, 'plane', 'Rawabuaya', 'Soekarno-Hatta', '2025-10-02 09:10:00', NULL, NULL, 'RWB-CGK-004', 160, 140, '', ''),
+(114, 'plane', 'Batu Ceper', 'Soekarno-Hatta', '2025-10-02 11:30:00', NULL, NULL, 'BTP-CGK-005', 110, 80, '', ''),
+(115, 'plane', 'Soekarno-Hatta', 'Manggarai', '2025-10-02 14:00:00', NULL, NULL, 'CGK-MGR-006', 130, 100, '', ''),
+(116, 'plane', 'Soekarno-Hatta', 'Sudirman Baru', '2025-10-02 16:30:00', NULL, NULL, 'CGK-SDB-007', 125, 90, '', ''),
+(117, 'plane', 'Soekarno-Hatta', 'Duri', '2025-10-02 19:45:00', NULL, NULL, 'CGK-DRI-008', 145, 115, '', ''),
+(118, 'plane', 'Soekarno-Hatta', 'Rawabuaya', '2025-10-02 21:15:00', NULL, NULL, 'CGK-RWB-009', 155, 130, '', ''),
+(119, 'plane', 'Soekarno-Hatta', 'Batu Ceper', '2025-10-02 23:50:00', NULL, NULL, 'CGK-BTP-010', 135, 100, '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t_trip_history`
+--
+
+CREATE TABLE `t_trip_history` (
+  `trip_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `train_code` varchar(60) NOT NULL,
+  `seat_code` varchar(60) NOT NULL,
+  `start_stat_name` varchar(60) NOT NULL,
+  `finish_stat_name` varchar(60) NOT NULL,
+  `starting_city` varchar(60) NOT NULL,
+  `destination_city` varchar(60) NOT NULL,
+  `train_type` enum('local','nonlocal','plane') DEFAULT NULL,
+  `schedule` datetime NOT NULL,
+  `payment_amount` int(100) NOT NULL,
+  `train_name` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `t_trip_history`
+--
+
+INSERT INTO `t_trip_history` (`trip_id`, `user_id`, `train_code`, `seat_code`, `start_stat_name`, `finish_stat_name`, `starting_city`, `destination_city`, `train_type`, `schedule`, `payment_amount`, `train_name`) VALUES
+(1, 1, 'MGR-CGK-001', 'A1', 'Manggarai', 'Soekarno-Hatta', 'Jakarta', 'Tangerang', 'plane', '2025-10-04 06:00:00', 183810, 'Airport Express 001'),
+(2, 1, 'LOC-RED-001', 'A5', 'Jakarta Kota', 'Bogor', 'Jakarta', 'Bogor', 'local', '2025-10-04 17:00:00', 125000, 'Local Trans 006'),
+(3, 1, 'NON-ATA-ARB-001', 'A3', 'Alastua', 'Arasakabu', 'Kota Semarang', 'Kabupaten Deli Serdang', 'nonlocal', '2025-10-04 08:00:00', 142000, 'Intercity 001');
 
 -- --------------------------------------------------------
 
@@ -539,7 +752,8 @@ ALTER TABLE `t_lrt`
 --
 ALTER TABLE `t_lrt_line`
   ADD PRIMARY KEY (`lrt_line_id`),
-  ADD UNIQUE KEY `line_code` (`lrt_line_code`);
+  ADD UNIQUE KEY `line_code` (`lrt_line_code`),
+  ADD UNIQUE KEY `lrt_line_id` (`lrt_line_id`,`lrt_line_name`);
 
 --
 -- Indexes for table `t_plane`
@@ -556,15 +770,6 @@ ALTER TABLE `t_seat`
   ADD KEY `train_code` (`train_code`);
 
 --
--- Indexes for table `t_ticket`
---
-ALTER TABLE `t_ticket`
-  ADD PRIMARY KEY (`ticket_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `train_id` (`train_id`),
-  ADD KEY `seat_code` (`seat_code`);
-
---
 -- Indexes for table `t_train`
 --
 ALTER TABLE `t_train`
@@ -572,6 +777,12 @@ ALTER TABLE `t_train`
   ADD UNIQUE KEY `train_code` (`train_code`),
   ADD KEY `cl_line` (`cl_line_code`),
   ADD KEY `lrt_line` (`lrt_line_code`);
+
+--
+-- Indexes for table `t_trip_history`
+--
+ALTER TABLE `t_trip_history`
+  ADD PRIMARY KEY (`trip_id`);
 
 --
 -- Indexes for table `t_user`
@@ -637,19 +848,19 @@ ALTER TABLE `t_plane`
 -- AUTO_INCREMENT for table `t_seat`
 --
 ALTER TABLE `t_seat`
-  MODIFY `seat_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `t_ticket`
---
-ALTER TABLE `t_ticket`
-  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `seat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=896;
 
 --
 -- AUTO_INCREMENT for table `t_train`
 --
 ALTER TABLE `t_train`
-  MODIFY `train_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `train_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
+
+--
+-- AUTO_INCREMENT for table `t_trip_history`
+--
+ALTER TABLE `t_trip_history`
+  MODIFY `trip_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `t_user`
@@ -678,20 +889,6 @@ ALTER TABLE `t_cl`
 --
 ALTER TABLE `t_lrt`
   ADD CONSTRAINT `t_lrt_ibfk_1` FOREIGN KEY (`lrt_line_code`) REFERENCES `t_lrt_line` (`lrt_line_code`);
-
---
--- Constraints for table `t_seat`
---
-ALTER TABLE `t_seat`
-  ADD CONSTRAINT `t_seat_ibfk_1` FOREIGN KEY (`train_code`) REFERENCES `t_train` (`train_code`);
-
---
--- Constraints for table `t_ticket`
---
-ALTER TABLE `t_ticket`
-  ADD CONSTRAINT `t_ticket_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `t_user` (`user_id`),
-  ADD CONSTRAINT `t_ticket_ibfk_2` FOREIGN KEY (`train_id`) REFERENCES `t_train` (`train_id`),
-  ADD CONSTRAINT `t_ticket_ibfk_3` FOREIGN KEY (`seat_code`) REFERENCES `t_seat` (`train_code`);
 
 --
 -- Constraints for table `t_train`

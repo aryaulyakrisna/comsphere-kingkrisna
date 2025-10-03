@@ -7,6 +7,7 @@ import {
 } from "../rules/authRule.js";
 import {
   loginController,
+  verifyAnswerController,
   meController,
   registerController,
 } from "../controllers/authController.js";
@@ -14,6 +15,7 @@ import {
 const authRouter = express.Router();
 
 authRouter.post("/auth", loginRules, validator, loginController);
+authRouter.post("/auth/verify-answer", verifyAnswerController);
 authRouter.get("/auth", authMiddleware, meController);
 authRouter.post("/auth/register", registerRules, validator, registerController);
 

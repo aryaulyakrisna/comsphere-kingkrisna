@@ -1,18 +1,39 @@
-import { login, me, register} from "../repositories/authRepository.js";
+import { login, me, register, verifyQuestion} from "../repositories/authRepository.js";
 
 export const loginController = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const token = await login(username, password);
+    const data = await login(username, password);
+
+    res.status(200).json({
+      message: "Successfully",
+      data: data,
+    });
+    
+  } catch (err) {
+    const ERROR_MESSAGE = ["Wrong credentials"];
+
+    if (ERROR_MESSAGE.includes(err.message))
+      res.status(400).json({ error: err.message });
+    else {
+      console.error({ error: err });
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+};
+
+export const verifyAnswerController = async (req, res) => {
+  try {
+    const { user_id, question, answer } = req.body;
+    const data = await verifyQuestion(user_id, question, answer);
 
     res.status(200).json({
       message: "Successfully login",
-      data: {
-        accessToken: token, // JWT token
-      },
+      data: data,
     });
+
   } catch (err) {
-    const ERROR_MESSAGE = ["Wrong credentials"];
+    const ERROR_MESSAGE = ["Failed to verify OTP answer", "Wrong answer"];
 
     if (ERROR_MESSAGE.includes(err.message))
       res.status(400).json({ error: err.message });

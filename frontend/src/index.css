@@ -1,23 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: light --default;
 };
 
-body, #root {
-  @apply min-h-screen w-full;
+
+.inter {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.inter-semibold {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
 
 button {
   @apply cursor-pointer;
-  --main-background: #F2F2F2;
-  --secondary-background: #E6E6E6;
-  --primary: #105AF3;
-  --main-height: calc(100vh - 324px);
 }
 
+body, #root {
+  @apply min-h-screen overflow-x-hidden overflow-y-auto;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: #2E2B70;
+}
 
+main {
+  @apply bg-gradient-to-br from-base-100 to-[#2E2B70]/30
+}
 
-@keyframes wave {
+.label {
+  @apply text-sm
+}
+
+/* @keyframes wave {
   0% { transform: rotate(0deg); }
   25% { transform: rotate(-5deg); }
   50% { transform: rotate(10deg); }
@@ -27,4 +50,4 @@ button {
 
 .wave {
   animation: wave 0.5s ease-in-out infinite;
-}
+} */

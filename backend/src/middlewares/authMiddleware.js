@@ -8,10 +8,14 @@ async function authMiddleware(req, res, next) {
   const JWTToken =
     req.headers["authorization"] && req.headers["authorization"].split(" ")[1]; // ambil dari format: Bearer <token>
 
-  if (!JWTToken) return res.status(401).json({ message: "No token provided" }); // respon status tidak memiliki kredensial
+  if (!JWTToken) return res.status(401).json({ message: "No token provided" }); // respon status tidak memiliki kredensial)
 
   const decoded = verifyToken(JWTToken);
 
+  if (JWTToken === process.env.MICROSERVICES_PW) {
+    return next();
+  }
+  
   if (!decoded)
     return res.status(403).json({ message: "Invalid or expired token" }); // respon status token habis/salah
 

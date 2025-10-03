@@ -12,7 +12,7 @@ export const trainSeat = async (
 
   if (plane_train) {
     const [existingPlane] = await pool.query(
-      "SELECT * FROM t_seat WHERE train_type = 'plane' AND (starting_city = ? OR destination_city = ?)",
+      "SELECT train_name, seat_type, start_station_name, finish_station_name, starting_city, destination_city, schedule, payment_amount FROM t_seat WHERE train_type = 'plane' AND (starting_city = ? OR destination_city = ?)",
       [starting_city, destination_city]
     );
 
@@ -21,7 +21,7 @@ export const trainSeat = async (
 
   if (local_train) {
     const [existingLocal] = await pool.query(
-      "SELECT * FROM t_seat WHERE train_type = 'local' AND (starting_city = ? OR destination_city = ?)",
+      "SELECT train_name, seat_type, start_station_name, finish_station_name, starting_city, destination_city, schedule, payment_amount FROM t_seat WHERE train_type = 'local' AND (starting_city = ? OR destination_city = ?)",
       [starting_city, destination_city]
     );
 
@@ -30,7 +30,7 @@ export const trainSeat = async (
 
   if (nonlocal_train) {
     const [existingLocal] = await pool.query(
-      "SELECT * FROM t_seat WHERE train_type = 'nonlocal' AND (starting_city = ? OR destination_city = ?)",
+      "SELECT train_name, seat_type, start_station_name, finish_station_name, starting_city, destination_city, schedule, payment_amount FROM t_seat WHERE train_type = 'nonlocal' AND (starting_city = ? OR destination_city = ?)",
       [starting_city, destination_city]
     );
 

@@ -3,6 +3,7 @@ import express from "express";
 import configureEnv from "./src/utils/configureEnv.js";
 import authRouter from "./src/routes/authRoute.js";
 import trainRouter from "./src/routes/trainRoute.js";
+import tripHistoryRouter from "./src/routes/tripHistoryRoute.js";
 import trainSeatRouter from "./src/routes/trainSeatRoute.js";
 import seatRouter from "./src/routes/seatRoute.js";
 import chatRouter from "./src/routes/chatRoute.js";
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use("/", authRouter);
 app.use("/", trainRouter);
+app.use("/", tripHistoryRouter);
 app.use("/", trainSeatRouter);
 app.use("/", seatRouter);
 app.use("/", chatRouter);
