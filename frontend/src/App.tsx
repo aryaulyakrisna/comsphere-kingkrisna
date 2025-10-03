@@ -3,6 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ChatPage from "./pages/ChatPage";
+import VerifyOtpPage from "./pages/VerifyOtpPage";
 import NoPage from "./pages/NoPage";
 import useAuth from "./hooks/useAuth";
 import LoadingPage from "./pages/LoadingPage";
@@ -36,9 +37,11 @@ function App() {
           errorElement={<NoPage />}
         />
         <Route
-          path="*"
-          element={<NoPage />}
+          path="/verify-answer"
+          element={displayedWhenAuth(<VerifyOtpPage />)}
+          errorElement={<NoPage />}
         />
+        <Route path="*" element={<NoPage />} />
       </Routes>
     </>
   );

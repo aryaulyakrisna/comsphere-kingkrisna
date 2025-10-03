@@ -62,6 +62,7 @@ const LoginForm = () => {
       <input
         name="password"
         ref={passwordRef}
+        type="password"
         id="password"
         className="w-full overflow-y-auto rounded-lg shadow-xl bg-base-200 p-4 focus:outline-none"
         placeholder="Password"

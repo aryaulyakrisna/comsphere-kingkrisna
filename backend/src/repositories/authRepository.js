@@ -37,13 +37,16 @@ export const login = async (username, password) => {
     return generateToken(payload, "1d");
   }
 
-  const otpResponse = await fetch("http://localhost:8000/otp/get-question", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user_id: existingUser[0].user_id }),
-  });
+  const otpResponse = await fetch(
+    process.env.MICROSERVICES_URL + "/otp/get-question",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id: existingUser[0].user_id }),
+    }
+  );
 
   // Cek apakah request OTP berhasil
   if (!otpResponse.ok) {
@@ -79,13 +82,16 @@ export const verifyQuestion = async (user_id, answer) => {
       [user_id]
     );
 
-    const otpResponse = await fetch("http://localhost:8000/otp/verify-answer", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user_id, question, answer }),
-    });
+    const otpResponse = await fetch(
+      process.env.MICROSERVICES_URL + "/otp/verify-answer",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id, question, answer }),
+      }
+    );
 
     if (!otpResponse.ok) {
       throw new Error("Failed to verify OTP answer");
