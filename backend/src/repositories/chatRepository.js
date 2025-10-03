@@ -16,14 +16,12 @@ export const getChat = async (user_id) => {
 
     if (diffHours > 24) {
       await pool.query("DELETE FROM t_chat WHERE user_id = ?", [user_id]);
-      return []
+      return [];
     }
-
   }
 
   return existingChat;
 };
-
 
 export const postChat = async (user_id, chat, chat_from) => {
   const chatHistory = await getChat(user_id);
@@ -33,8 +31,7 @@ export const postChat = async (user_id, chat, chat_from) => {
     chat_history: chatHistory,
   };
 
-
-  // Bentuk chat kalo cuman message (string) kalo json mungkin 
+  // Bentuk chat kalo cuman message (string) kalo json mungkin
   //     { message: "addasdasdas", type: "seat",
   //       {
   //           "seat_id": 4,
@@ -45,8 +42,7 @@ export const postChat = async (user_id, chat, chat_from) => {
   //       }
   //     }
 
-
-  const response = await fetch("http://localhost:4173/api-chat", {
+  const response = await fetch(process.env.MICROSERVICES_URL + "/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
