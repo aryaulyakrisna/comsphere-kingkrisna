@@ -17,7 +17,8 @@ export const getChatController = async (req, res) => {
 
 export const postChatController = async (req, res) => {
   try {
-    const { user_id, chat, chat_from } = req.body;
+    const { user_id } = req.user;
+    const { chat, chat_from } = req.body;
     const result = await postChat(user_id, chat, chat_from);
 
     res.status(200).json({
