@@ -37,6 +37,8 @@ export const login = async (username, password) => {
     return generateToken(payload, "1d");
   }
 
+  console.log(process.env.MICROSERVICES_URL + "/otp/get-question");
+
   const otpResponse = await fetch(
     process.env.MICROSERVICES_URL + "/otp/get-question",
     {

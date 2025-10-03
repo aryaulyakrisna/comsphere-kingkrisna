@@ -2,13 +2,8 @@ import { tripHistory } from "../repositories/tripHistoryRepository.js";
 
 export const tripHistoryController = async (req, res) => {
   try {
-    const { user_id, plane_train, local_train, nonlocal_train } = req.query;
-    const result = await tripHistory(
-      user_id,
-      plane_train,
-      local_train,
-      nonlocal_train,
-    );
+    const { user_id } = req.query;
+    const result = await tripHistory(user_id);
 
     res.status(200).json({
       message: "Data is sent",
