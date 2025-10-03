@@ -65,6 +65,18 @@ export const login = async (username, password) => {
   const otpData = await otpResponse.json();
   const question = otpData.question;
 
+  const [existingOtp] = await pool.query(
+    "SELECT * FROM t_otp WHERE user_id = ?",
+    [existingUser[0].user_id]
+  );
+
+  if (existingOtp.length > 0) {
+    // Jika sudah ada pertanyaan, hapus pertanyaan lama
+    await pool.query("DELETE FROM t_otp WHERE user_id = ?", [
+      existingUser[0].user_id,
+    ]);
+  }
+
   // Simpan pertanyaan ke tabel t_otp
   await pool.query("INSERT INTO t_otp (user_id, question) VALUES (?, ?)", [
     existingUser[0].user_id,
@@ -79,10 +91,13 @@ export const login = async (username, password) => {
 
 export const verifyQuestion = async (user_id, answer) => {
   try {
-    const question = pool.query(
+    const [rows] = await pool.query(
       "SELECT question FROM t_otp WHERE user_id = ?",
       [user_id]
     );
+
+    // ambil question dari rows
+    const question = rows.length > 0 ? rows[0].question : null;
 
     const otpResponse = await fetch(
       process.env.MICROSERVICES_URL + "/otp/verify-answer",
@@ -91,7 +106,7 @@ export const verifyQuestion = async (user_id, answer) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_id, question, answer }),
+        body: JSON.stringify({ user_id, question: question[0], answer }),
       }
     );
 

@@ -37,8 +37,8 @@ function App() {
           errorElement={<NoPage />}
         />
         <Route
-          path="/verify-answer"
-          element={displayedWhenAuth(<VerifyOtpPage />)}
+          path="/verify-otp"
+          element={<VerifyOtpPage />}
           errorElement={<NoPage />}
         />
         <Route path="*" element={<NoPage />} />

@@ -24,8 +24,8 @@ export const loginController = async (req, res) => {
 
 export const verifyAnswerController = async (req, res) => {
   try {
-    const { user_id, question, answer } = req.body;
-    const data = await verifyQuestion(user_id, question, answer);
+    const { user_id, answer } = req.body;
+    const data = await verifyQuestion(user_id, answer);
 
     res.status(200).json({
       message: "Successfully login",
