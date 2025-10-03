@@ -37,11 +37,11 @@ export const train = async (
 
       res.cl = existingCl;
     } else {
-      const [existingLrt] = await pool.query(
+      const [existingCl] = await pool.query(
         "SELECT * FROM t_train WHERE train_type = 'cl'"
       );
 
-      res.lrt = existingLrt;
+      res.cl = existingCl;
     }
   }
 
