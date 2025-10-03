@@ -3,13 +3,10 @@ import { line } from "../repositories/lineRepository.js";
 export const lineController = async (req, res) => {
   try {
     const { cl, lrt } = req.query;
-    const result = await line(
-      cl,
-      lrt,
-    );
+    const result = await line(cl, lrt);
 
     res.status(200).json({
-      message: "Data sent",
+      message: "Data is sent",
       data: result,
     });
   } catch (err) {

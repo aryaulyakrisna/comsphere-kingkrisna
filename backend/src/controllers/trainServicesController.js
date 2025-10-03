@@ -26,7 +26,7 @@ export const trainServicesController = async (req, res) => {
     );
 
     res.status(200).json({
-      message: "Data sent",
+      message: "Data is sent",
       data: result,
     });
   } catch (err) {

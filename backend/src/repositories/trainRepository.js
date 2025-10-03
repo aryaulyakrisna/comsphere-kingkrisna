@@ -1,28 +1,48 @@
-import pool from "../config/config.js"
+import pool from "../config/config.js";
 
 export const train = async (
   cl,
   lrt,
   plane_train,
   local_train,
-  nonlocal_train
+  nonlocal_train,
+  cl_line_code,
+  lrt_line_code
 ) => {
   let res = {};
 
   if (lrt) {
-    const [existingLrt] = await pool.query(
-      "SELECT * FROM t_train WHERE train_type = 'lrt'"
-    );
+    if (lrt_line_code) {
+      const [existingLrt] = await pool.query(
+        "SELECT * FROM t_train WHERE train_type = 'lrt' AND lrt_line_code = ?",
+        [lrt_line_code]
+      );
 
-    res.lrt = existingLrt;
+      res.lrt = existingLrt;
+    } else {
+      const [existingLrt] = await pool.query(
+        "SELECT * FROM t_train WHERE train_type = 'lrt'"
+      );
+
+      res.lrt = existingLrt;
+    }
   }
 
   if (cl) {
-    const [existingCl] = await pool.query(
-      "SELECT * FROM t_train WHERE train_type = 'cl'"
-    );
+    if (cl_line_code) {
+      const [existingCl] = await pool.query(
+        "SELECT * FROM t_train WHERE train_type = 'cl' AND cl_line_code = ?",
+        [cl_line_code]
+      );
 
-    res.cl = existingCl;
+      res.cl = existingCl;
+    } else {
+      const [existingLrt] = await pool.query(
+        "SELECT * FROM t_train WHERE train_type = 'cl'"
+      );
+
+      res.lrt = existingLrt;
+    }
   }
 
   if (plane_train) {
