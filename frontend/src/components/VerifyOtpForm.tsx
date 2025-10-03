@@ -54,16 +54,16 @@ const VerifyOtpForm = ({user_id, question}: VerifyOtpFormProps) => {
 
   return (
     <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4">
-      <div>{}</div>
-      <label htmlFor="password" className="label">
+      <div>{question}</div>
+      <label htmlFor="Jawaban" className="label">
         Jawaban
       </label>
       <input
-        name="password"
+        name="answer"
         ref={answerRef}
-        id="password"
+        id="answer"
         className="w-full overflow-y-auto rounded-lg shadow-xl bg-base-200 p-4 focus:outline-none"
-        placeholder="Password"
+        placeholder="Jawaban"
       />
       <Button buttonType="submit">
         {loginLoading ? (
