@@ -131,5 +131,3 @@ password: AryaAdmin
 ---
 
 ⭐ Jika project ini membantu Anda, berikan star di repository ini!
-
-**#Hackathon #Comsphere #AI #RailwayTech #Indonesia**
