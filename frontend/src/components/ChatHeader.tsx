@@ -1,14 +1,17 @@
+import useAuth from "../hooks/useAuth";
 import { removeAccessToken } from "../utils/accessToken";
 import DangerButton from "./DangerButton";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const handleLogout = () => {
     // Logic for logging out the user
     removeAccessToken();
     navigate("/login");
+    setAuth(false);
   };
 
   return (

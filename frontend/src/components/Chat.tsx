@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown';
+import formatDate from '../utils/formatDate';
 
 export interface ChatProps {
   from: "user" | "bot"
@@ -21,7 +22,7 @@ const Chat = ({datetime, message, from}: ChatProps) => {
           from === "user" ? "items-end" : "items-start"
         }`}
       >
-        <label className="label text-sm">{datetime}</label>
+        <label className="label text-sm">{formatDate(datetime)}</label>
         <div
           className={`bg-base-100 p-4 shadow-xl rounded-lg ${
             from !== "user" && "border-2 border-[#2E2B70]"
