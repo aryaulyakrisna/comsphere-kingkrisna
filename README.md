@@ -1,6 +1,6 @@
 # 🚄 RailBot - AI-Powered Railway Assistant
 
-RailBot adalah asisten perjalanan kereta berbasis RAG (Retrieval-Augmented Generation) serta fitur keamanan KBA (Knowledge Base Aunthentication) yang dikembangkan untuk Hackathon Comsphere. Sistem ini dirancang untuk mendampingi pengguna layanan KAI dalam merencanakan dan melakukan perjalanan dengan lebih mudah dan efisien.
+RailBot adalah asisten perjalanan kereta berbasis RAG (Retrieval-Augmented Generation) serta fitur keamanan KBA (Knowledge Base Aunthentication) atau sistem authorisasi berbasis pengetahuan dimana sistem pertanyaan didapatkan dari history perjalanan pengguna, sehingga hanya pengguna yang dapat mengaksesnya. Sistem ini dirancang untuk mendampingi pengguna layanan KAI dalam merencanakan dan melakukan perjalanan dengan lebih mudah dan efisien.
 
 ## ✨ Fitur Utama
 
