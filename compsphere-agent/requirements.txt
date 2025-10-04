@@ -1,0 +1,16 @@
+# python-telegram-bot
+langchain
+langchain_chroma
+langchain_huggingface
+sentence-transformers 
+langchain-community 
+pandas
+pydantic
+bs4
+langchain_openai
+protobuf==3.20.3
+langchain_google_genai
+selenium
+fastapi[standard]
+pymysql
+# webdriver-manager

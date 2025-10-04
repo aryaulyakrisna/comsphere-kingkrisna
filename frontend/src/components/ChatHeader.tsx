@@ -21,7 +21,7 @@ const Header = () => {
         <p className="text-lg font-semibold">RailBot</p>
       </a>
       <DangerButton next={handleLogout}>
-        <p>Masuk</p>
+        <p>Keluar</p>
       </DangerButton>
     </div>
   );
